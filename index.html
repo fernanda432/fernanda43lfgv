@@ -1,0 +1,80 @@
+<! DOCTYPE html>
+<Html>
+  <Cabeza>
+    <meta charset="utf-8">
+    <meta nombre="ventana gráfica" content="width=device-width, initial-scale=1">
+    <título>Autenticación</título>
+    <link rel="hoja de estilo" href="estilos.css">
+
+   <!-- Carga el núcleo de Firebase JS SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <!-- Agrega el manejo de la autenticación. -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js">
+    </Guión>
+    <script src="js/init.js"></script>
+  </Cabeza>
+  <Cuerpo>
+    <h1>Autenticación</h1>
+    <h1>Sesión</h1>
+    <Fieldset>
+      <leyenda>Correo electrónico</leyenda>
+      <id de salida ="correo electrónico"><progreso max="100">Cargando... </progreso></salida>
+    </Fieldset>
+    <Fieldset>
+      <leyenda>Nombre</leyenda>
+      <id de salida ="nombre"></salida>
+    </Fieldset>
+    <figura><img id="avatar" alt="Avatar"></figura>
+    < botón type="botón" onclick="terminaSesión()">Terminar sesión</botón>
+    <pie de página>Copyright &copy; 2021 González Vargas Laura Fernanda. </pie de página>
+    <Guión>
+      //@ts-comprobar
+      /** Conexión al sistema de autenticación de Firebase. */
+      // @ts-ignorar
+      const auth = base de incendios. auth();
+      /** Tipo de autenticación de usuarios. En este caso es con Google. */
+      // @ts-ignorar
+      proveedor de const  = nueva base de incendios. auth. GoogleAuthProvider();
+      /* Configurar el proveedor de Google para que permita seleccionar de una
+ * Lista. */
+      proveedor. setCustomParameters({ prompt: "select_account" });
+      /* Recibe una función que se invoca cada vez que hay un cambio en la la
+       * autenticación y recibe el modelo con las características del usuario.*/
+      auth. onAuthStateChanged(
+        /** Recibe las características del usuario o nulo si no ha iniciado
+ * Sesión. */
+        usuarioAuth => {
+          if (usuarioAuth & usuarioAuth. correo electrónico) {
+            Usuario aceptado.
+            // @ts-ignora El correo electrónico registrado en Google.
+            correo electrónico. valor = usuarioAuth. correo electrónico;
+            // @ts-ignora Muestra el nombre registrado en Google.
+            nombre. valor = usuarioAuth. displayName;
+            // @ts-ignora Muestra el avatar registrado en Google.
+            avatar. src = usuarioAuth. fotoURL;
+          } Más {
+            No hay ha iniciado sesión. Pide datos para iniciar sesión.
+            auth. signInWithRedirect(proveedor);
+          }
+        },
+        Función que se invoca si hay un error al verificar el usuario.
+        procesoError
+      );
+      Termina la sesión. */
+      función asincrónica terminaSesión() {
+        Tratar {
+          esperar auth. signOut();
+        } captura (e) {
+          procesoError(e);
+        }
+      }
+      /** Procesa un error. Muestra del objeto en el consuelo y un cuadro de
+       * alerta con el mensaje.
+       * @param {Error} e descripción del error. */
+      función procesaError(e) {
+        consola. registro(e);
+        alerta(e. mensaje);
+      }
+    </Guión>
+  </Cuerpo>
+</Html>
